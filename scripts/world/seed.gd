@@ -8,6 +8,9 @@ var noise: FastNoiseLite = FastNoiseLite.new()
 #@export var textures: WorldTextures
 #var textures: WorldTextures = WorldTextures.new()
 
+var water_level : float = 0.0
+var wataer_color : Color = Color.LIGHT_BLUE
+
 ## This acts as your "Randomize" button
 @export var RANDOMIZE_SEED: bool = false:
 	set(val):
