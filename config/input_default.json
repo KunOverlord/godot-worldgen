@@ -1,0 +1,6 @@
+{
+	"action": "button1",
+	"jump": "button2",
+	"back": "button3",
+	"lock": "button4"
+}

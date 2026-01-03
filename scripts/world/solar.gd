@@ -1,0 +1,8 @@
+class_name StarWorld
+extends World
+
+func _ready() -> void:
+	pass
+	
+func _process(delta: float) -> void:
+	pass

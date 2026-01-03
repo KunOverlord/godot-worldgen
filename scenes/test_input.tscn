@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://dsebg2cr7gnn4"]
+
+[ext_resource type="Script" uid="uid://bgqvbpvpdl70s" path="res://scripts/input/game_input_debug.gd" id="1_mvvly"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_mvvly")
