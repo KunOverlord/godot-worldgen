@@ -1,0 +1,54 @@
+[gd_resource type="Resource" script_class="LandTemplate" load_steps=15 format=3 uid="uid://dc0fh537yxol7"]
+
+[ext_resource type="Script" uid="uid://bu2rjvy3rv1bx" path="res://scripts/world/landscape/template.gd" id="1_475gv"]
+[ext_resource type="Script" uid="uid://d1ti5u6nlj2ln" path="res://scripts/materials/terrain.gd" id="2_gctke"]
+[ext_resource type="Texture2D" uid="uid://clk0hqrqf3aju" path="res://assets/textures/underwater.jpg" id="3_efv0x"]
+[ext_resource type="Script" uid="uid://b88suvcufmgdt" path="res://scripts/materials/water.gd" id="3_gctke"]
+[ext_resource type="Texture2D" uid="uid://c5ynvncg7b2v0" path="res://assets/textures/sand.jpg" id="4_o4yy0"]
+[ext_resource type="Texture2D" uid="uid://cj7rmxjnow2al" path="res://assets/textures/grass.jpg" id="5_xswv0"]
+[ext_resource type="Texture2D" uid="uid://cl6bp2caxxu5a" path="res://assets/textures/rock.jpg" id="6_bjnku"]
+[ext_resource type="Texture2D" uid="uid://j37fbkctdjcn" path="res://assets/textures/snow.jpg" id="7_m7l8l"]
+
+[sub_resource type="Resource" id="Resource_qd0mg"]
+script = ExtResource("2_gctke")
+texture = ExtResource("3_efv0x")
+name = "underwater"
+metadata/_custom_type_script = "uid://d1ti5u6nlj2ln"
+
+[sub_resource type="Resource" id="Resource_svnyy"]
+script = ExtResource("2_gctke")
+texture = ExtResource("4_o4yy0")
+name = "Sand"
+metadata/_custom_type_script = "uid://d1ti5u6nlj2ln"
+
+[sub_resource type="Resource" id="Resource_ku2u6"]
+script = ExtResource("2_gctke")
+texture = ExtResource("5_xswv0")
+name = "Grass"
+metadata/_custom_type_script = "uid://d1ti5u6nlj2ln"
+
+[sub_resource type="Resource" id="Resource_snm07"]
+script = ExtResource("2_gctke")
+texture = ExtResource("6_bjnku")
+name = "Rock"
+metadata/_custom_type_script = "uid://d1ti5u6nlj2ln"
+
+[sub_resource type="Resource" id="Resource_h43y2"]
+script = ExtResource("2_gctke")
+texture = ExtResource("7_m7l8l")
+name = "Snow"
+metadata/_custom_type_script = "uid://d1ti5u6nlj2ln"
+
+[sub_resource type="Resource" id="Resource_o4yy0"]
+script = ExtResource("3_gctke")
+height = 10
+flow = 2.5
+name = "Water"
+metadata/_custom_type_script = "uid://b88suvcufmgdt"
+
+[resource]
+script = ExtResource("1_475gv")
+water = SubResource("Resource_o4yy0")
+terrain = Array[ExtResource("2_gctke")]([SubResource("Resource_qd0mg"), SubResource("Resource_svnyy"), SubResource("Resource_ku2u6"), SubResource("Resource_snm07"), SubResource("Resource_h43y2")])
+max_height = 80.0
+metadata/_custom_type_script = "uid://bu2rjvy3rv1bx"

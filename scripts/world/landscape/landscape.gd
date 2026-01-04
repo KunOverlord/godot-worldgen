@@ -1,8 +1,11 @@
 @tool
 class_name LandscapeWorld extends World
 
-var world: WorldSeed = WorldSeed.new()
+const TEST_WORLD = preload("res://assets/templates/lands/tropical.tres")
+
+var world: WorldSeed = WorldSeed.new(TEST_WORLD)
 var water: WaterNode # to implement from the WorldSeed generation
+var nodes: Array[TerrainNode] = []
 
 @export_group("Terrain Settings")
 @export var chunk_count: Vector2i = Vector2i(2, 2)
@@ -50,11 +53,12 @@ func generate_world() -> void:
 	# 4. Create chunks
 	for x in range(chunk_count.x):
 		for z in range(chunk_count.y):
-			create_node(Vector2i(x, z))
+			#nodes.append( create_node(Vector2i(x, z) ) )
+			create_node(Vector2i(x, z ) ) 
 	
 	print("--- Generation Finished ---")
 
-func create_node(coord: Vector2i) -> void:
+func create_node(coord: Vector2i) -> TerrainNode:
 	var node = TerrainNode.new()
 	node.name = "node_%d_%d" % [coord.x, coord.y]
 	add_child(node)
@@ -67,3 +71,7 @@ func create_node(coord: Vector2i) -> void:
 	
 	if textures:
 		node.apply_visuals(textures)
+
+	return node
+
+	
