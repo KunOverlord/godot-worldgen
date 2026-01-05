@@ -1,15 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://domoki3ijmoh2"]
+[gd_scene load_steps=6 format=3 uid="uid://domoki3ijmoh2"]
 
 [ext_resource type="Script" uid="uid://bkv3ywfsoqmnl" path="res://scripts/player_test.gd" id="1_e7mys"]
 [ext_resource type="Script" uid="uid://ddf2307fq3ju3" path="res://scripts/camera_test.gd" id="2_0ax77"]
 [ext_resource type="Script" uid="uid://bglu5houivkje" path="res://scripts/world/landscape/landscape.gd" id="3_x6lmx"]
-[ext_resource type="Script" uid="uid://pp6sjaavn6yg" path="res://scripts/world/landscape/textures.gd" id="4_48w40"]
 [ext_resource type="Script" uid="uid://c0ncabdknbcy5" path="res://scripts/world/landscape/node.gd" id="5_48w40"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_22uif"]
-
-[sub_resource type="Resource" id="Resource_gqg63"]
-script = ExtResource("4_48w40")
 
 [node name="World" type="Node3D"]
 
@@ -31,22 +27,10 @@ script = ExtResource("2_0ax77")
 
 [node name="Landscape" type="Node3D" parent="."]
 script = ExtResource("3_x6lmx")
-textures = SubResource("Resource_gqg63")
-offset = Vector2(32, 32)
+offset = Vector2(8, 8)
 
 [node name="node_0_0" type="StaticBody3D" parent="Landscape"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32, 0, -32)
-script = ExtResource("5_48w40")
-
-[node name="node_0_1" type="StaticBody3D" parent="Landscape"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32, 0, 0)
-script = ExtResource("5_48w40")
-
-[node name="node_1_0" type="StaticBody3D" parent="Landscape"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -32)
-script = ExtResource("5_48w40")
-
-[node name="node_1_1" type="StaticBody3D" parent="Landscape"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, -8)
 script = ExtResource("5_48w40")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]

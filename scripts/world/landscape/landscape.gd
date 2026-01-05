@@ -9,14 +9,13 @@ var water: WaterNode # to implement from the WorldSeed generation
 var nodes: Array[TerrainNode] = []
 
 @export_group("Terrain Settings")
-@export var chunk_count: Vector2i = Vector2i(2, 2)
-@export var node_size: int = 32
-@export var textures: WorldTextures = WorldTextures.new():
-	set(val):
-			textures = val
-			#world.textures = val # Pass it down to the internal resource
-			if Engine.is_editor_hint():
-				generate_world.call_deferred()
+@export_range(8,64,1) var node_size: int = 16
+@export var chunk_count: Vector2i = Vector2i(1, 1) :
+	set(value):
+		chunk_count = Vector2i(
+			min(32, max(value.x, 1) ),
+			min( 32 , max(value.y, 1 ) )
+		)
 
 @export_group("Controls")
 @export var CLICK_TO_REGENERATE: bool = false:
