@@ -1,9 +1,8 @@
 @tool
 class_name LandTemplate extends WorldTemplate
 
-const MAT_SIZE : int = 7
 
-@export_group("Terrain Biome")
+@export_group("Materials")
 @export var water : WaterMaterial
 ## The collection of LandMaterials (Grass, Sand, etc.) and their rules.
 @export var terrain: Array[LandMaterial] = [] :
@@ -18,3 +17,10 @@ const MAT_SIZE : int = 7
 @export_group("Generation Bounds")
 @export var min_height: float = -10.0
 @export var max_height: float = 30.0
+
+#used to test static loading	
+static func testworld() -> WorldSeed:
+	return create("tropical",TYPE_LAND)
+	#return WorldSeed.new( preload("res://assets/templates/land/tropical.tres") )
+
+	

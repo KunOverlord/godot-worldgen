@@ -47,6 +47,9 @@ func setup(coord: Vector2i, offset: Vector2 , size: int, noise: FastNoiseLite) -
 	collision_shape.shape = final_mesh.create_trimesh_shape()
 	
 	self.global_position = location
+	
+func apply_shader( material : ShaderMaterial ) -> void:
+	mesh_instance.material_override = material
 
 func apply_visuals(world_data: WorldTextures) -> void:
 	var mat = ShaderMaterial.new()

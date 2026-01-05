@@ -1,9 +1,10 @@
 @tool
 class_name LandscapeWorld extends World
 
-const TEST_WORLD = preload("res://assets/templates/lands/tropical.tres")
+#const TEST_WORLD = preload("res://assets/templates/land/tropical.tres")
 
-var world: WorldSeed = WorldSeed.new(TEST_WORLD)
+#var world: WorldSeed = WorldSeed.new(TEST_WORLD)
+var world : WorldSeed = LandTemplate.testworld()
 var water: WaterNode # to implement from the WorldSeed generation
 var nodes: Array[TerrainNode] = []
 
@@ -36,6 +37,7 @@ func generate_world() -> void:
 	print("--- Starting Regeneration ---")
 	#prepare the world origin offset
 	offset = world_offset()
+	var material : ShaderMaterial = world.template.testshader()
 	
 	# 1. Clear existing chunks
 	for child in get_children():
@@ -53,12 +55,11 @@ func generate_world() -> void:
 	# 4. Create chunks
 	for x in range(chunk_count.x):
 		for z in range(chunk_count.y):
-			#nodes.append( create_node(Vector2i(x, z) ) )
-			create_node(Vector2i(x, z ) ) 
+			create_node(Vector2i(x, z ) , material ) 
 	
 	print("--- Generation Finished ---")
 
-func create_node(coord: Vector2i) -> TerrainNode:
+func create_node(coord: Vector2i , material : ShaderMaterial = null ) -> TerrainNode:
 	var node = TerrainNode.new()
 	node.name = "node_%d_%d" % [coord.x, coord.y]
 	add_child(node)
@@ -68,10 +69,7 @@ func create_node(coord: Vector2i) -> TerrainNode:
 		node.owner = get_tree().edited_scene_root
 		
 	node.setup(coord, offset, node_size, world.noise)
-	
-	if textures:
-		node.apply_visuals(textures)
-
+	if material: node.apply_shader(material)
 	return node
 
 	
