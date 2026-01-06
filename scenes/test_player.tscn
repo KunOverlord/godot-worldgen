@@ -1,11 +1,29 @@
-[gd_scene load_steps=6 format=3 uid="uid://domoki3ijmoh2"]
+[gd_scene load_steps=10 format=3 uid="uid://domoki3ijmoh2"]
 
 [ext_resource type="Script" uid="uid://bkv3ywfsoqmnl" path="res://scripts/player_test.gd" id="1_e7mys"]
 [ext_resource type="Script" uid="uid://ddf2307fq3ju3" path="res://scripts/camera_test.gd" id="2_0ax77"]
 [ext_resource type="Script" uid="uid://bglu5houivkje" path="res://scripts/world/landscape/landscape.gd" id="3_x6lmx"]
 [ext_resource type="Script" uid="uid://c0ncabdknbcy5" path="res://scripts/world/landscape/node.gd" id="5_48w40"]
+[ext_resource type="Shader" uid="uid://cp4axj07ug4pq" path="res://assets/shaders/waternode.gdshader" id="5_gqg63"]
+[ext_resource type="Script" uid="uid://birpieynqxbvc" path="res://scripts/world/landscape/water.gd" id="6_hfou0"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_22uif"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gqg63"]
+render_priority = 0
+shader = ExtResource("5_gqg63")
+shader_parameter/water_color = Color(0.25490198, 0.4117647, 0.88235295, 1)
+shader_parameter/deep_water_color = Color(0, 0.1, 0.2, 1)
+shader_parameter/beer_law_factor = 2.0
+shader_parameter/edge_fade_distance = 0.5
+shader_parameter/wave_speed = 1.0
+shader_parameter/wave_height = 0.3
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_hfou0"]
+material = SubResource("ShaderMaterial_gqg63")
+size = Vector2(128, 128)
+subdivide_width = 64
+subdivide_depth = 64
 
 [node name="World" type="Node3D"]
 
@@ -20,6 +38,12 @@ shape = SubResource("BoxShape3D_22uif")
 
 [node name="Light" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -0.41716918, 0.90882885, 0, -0.90882885, -0.41716918, 0, 1.5123105, 1.7411625)
+light_color = Color(0.99481326, 0.8818197, 0.8244737, 1)
+light_energy = 1.4
+light_indirect_energy = 4.61
+light_volumetric_fog_energy = 2.627
+light_specular = 0.593
+shadow_enabled = true
 
 [node name="Camera" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.78297186, 1.8883439)
@@ -27,11 +51,75 @@ script = ExtResource("2_0ax77")
 
 [node name="Landscape" type="Node3D" parent="."]
 script = ExtResource("3_x6lmx")
-offset = Vector2(8, 8)
+node_count = Vector2i(4, 4)
+offset = Vector2(32, 32)
 
 [node name="node_0_0" type="StaticBody3D" parent="Landscape"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, -8)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32, 0, -32)
 script = ExtResource("5_48w40")
+
+[node name="node_0_1" type="StaticBody3D" parent="Landscape"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32, 0, -16)
+script = ExtResource("5_48w40")
+
+[node name="node_0_2" type="StaticBody3D" parent="Landscape"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32, 0, 0)
+script = ExtResource("5_48w40")
+
+[node name="node_0_3" type="StaticBody3D" parent="Landscape"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32, 0, 16)
+script = ExtResource("5_48w40")
+
+[node name="node_1_0" type="StaticBody3D" parent="Landscape"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, -32)
+script = ExtResource("5_48w40")
+
+[node name="node_1_1" type="StaticBody3D" parent="Landscape"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, -16)
+script = ExtResource("5_48w40")
+
+[node name="node_1_2" type="StaticBody3D" parent="Landscape"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, 0)
+script = ExtResource("5_48w40")
+
+[node name="node_1_3" type="StaticBody3D" parent="Landscape"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, 16)
+script = ExtResource("5_48w40")
+
+[node name="node_2_0" type="StaticBody3D" parent="Landscape"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -32)
+script = ExtResource("5_48w40")
+
+[node name="node_2_1" type="StaticBody3D" parent="Landscape"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -16)
+script = ExtResource("5_48w40")
+
+[node name="node_2_2" type="StaticBody3D" parent="Landscape"]
+script = ExtResource("5_48w40")
+
+[node name="node_2_3" type="StaticBody3D" parent="Landscape"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 16)
+script = ExtResource("5_48w40")
+
+[node name="node_3_0" type="StaticBody3D" parent="Landscape"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0, -32)
+script = ExtResource("5_48w40")
+
+[node name="node_3_1" type="StaticBody3D" parent="Landscape"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0, -16)
+script = ExtResource("5_48w40")
+
+[node name="node_3_2" type="StaticBody3D" parent="Landscape"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0, 0)
+script = ExtResource("5_48w40")
+
+[node name="node_3_3" type="StaticBody3D" parent="Landscape"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0, 16)
+script = ExtResource("5_48w40")
+
+[node name="@MeshInstance3D@49482" type="MeshInstance3D" parent="Landscape"]
+mesh = SubResource("PlaneMesh_hfou0")
+script = ExtResource("6_hfou0")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.74439317, 0.38932347, 0.5424999, -0.66774166, 0.4340147, 0.60477465, 0, -0.8124398, 0.5830451, 0, 9.999982, 1.588691)

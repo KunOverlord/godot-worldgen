@@ -1,58 +1,81 @@
-@tool
 class_name WorldSeed extends Resource
 
-@export var template: WorldTemplate:
-	set(val):
-		template = val
-		_sync_template_data() # Apply template defaults to this seed instance
-
-# Inspector Button
-@export var RANDOMIZE_SEED: bool = false:
-	set(val):
-		if val:
-			create_seed()
-			RANDOMIZE_SEED = false
-			notify_property_list_changed()
-
-var seed_string: String # Renamed from 'seed' to avoid confusion with noise.seed
-var noise: FastNoiseLite = FastNoiseLite.new()
+# Key: String (Attribute Name), Value: Variant (The generated value)
+var _data: Dictionary = {}
+var _seed: String # Renamed from 'seed' to avoid confusion with noise.seed
+var _noise: FastNoiseLite = FastNoiseLite.new()
 
 # Derived data from Template + Seed
 var water_level: float = 0.0
 var water_color: Color = Color.LIGHT_BLUE
 
-## Constructor: p_template is optional for Inspector compatibility
-func _init( tpl: WorldTemplate = null) -> void:
-	if tpl:
-		template = tpl
-	
+func _init( ) -> void:
 	# Initial Setup
-	noise.noise_type = FastNoiseLite.TYPE_PERLIN
-	noise.frequency = 0.02
+	_noise.noise_type = FastNoiseLite.TYPE_PERLIN
+	_noise.frequency = 0.02
 	create_seed()
 
+#
+func noise() ->FastNoiseLite:
+	return _noise
+
 func create_seed(size: int = 8) -> void:
-	seed_string = _generate_random_string(size)
-	print("New Seed [ %s ]" % seed_string)
-	_update_noise()
+	_seed = generate(size)
+	print("New Seed [ %s ]" % _seed)
+	update_noise()
 
-func _update_noise() -> void:
-	if noise:
-		noise.seed = seed_string.hash()
-	# Here you could also use the seed to "jitter" template values 
-	# (e.g., slightly different water height for every seed)
+#refresh noise
+func update_noise():
+	_noise.seed = _seed.hash()
 
-func _sync_template_data() -> void:
-	if template:
-		# Extract data from the Template "DNA"
-		water_color = template.sky_color # Or template.water_data.color
-		# Use the seed to slightly randomize the template's base levels
-		water_level = template.get_initial_water_level() 
-		print("Seed synced with Template: ", template.resource_name)
-
-func _generate_random_string(length: int) -> String:
+func generate(length: int) -> String:
 	var chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 	var result = ""
-	for i in range(length):
-		result += chars[randi() % chars.length()]
+	for i in range(length): result += chars[randi() % chars.length()]
 	return result
+
+func reset( template : WorldTemplate) -> WorldSeed:
+	create_seed()
+	return fill(template)
+
+#fill the seed with the world _data
+func fill(template: WorldTemplate = null) -> WorldSeed:
+	# 1. Start with a completely fresh, local, untyped dictionary
+	var new_data: Dictionary = {} 
+	
+	if not template:
+		_data = new_data
+		return self
+	
+	# 2. Get the source. We don't type 'contents' here to avoid inheritance issues
+	var contents = template.attributes()
+	
+	var rnd = RandomNumberGenerator.new()
+	rnd.seed = _noise.seed
+	
+	for att in contents:
+		var options = contents[att]
+		
+		# Check if options is a valid Array and not null
+		if options is Array and options.size() > 0:
+			var picked_value = options[rnd.randi() % options.size()]
+			# 3. Assign the single value (Float/Color) to the untyped map
+			new_data[att] = picked_value
+		else:
+			# Safety fallback for empty arrays in template
+			printerr("WorldSeed: Template attribute '", att, "' is empty or not an array.")
+	
+	# 4. Swap the local data into the class variable
+	_data = new_data
+	return self
+
+
+
+#
+func get_attribute(name : String , default : Variant = null) -> Variant:
+	return _data.get(name,default)
+#
+func set_attribute(name : String , value : Variant ) -> WorldSeed:
+	_data.set(name,value)
+	return self
+	

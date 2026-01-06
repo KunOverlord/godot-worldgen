@@ -1,5 +1,6 @@
-[gd_resource type="Resource" script_class="LandTemplate" load_steps=15 format=3 uid="uid://dc0fh537yxol7"]
+[gd_resource type="Resource" script_class="LandTemplate" load_steps=16 format=3 uid="uid://dc0fh537yxol7"]
 
+[ext_resource type="Script" uid="uid://nbsia7j22i70" path="res://scripts/materials/material.gd" id="1_4aojw"]
 [ext_resource type="Script" uid="uid://bu2rjvy3rv1bx" path="res://scripts/world/landscape/template.gd" id="1_475gv"]
 [ext_resource type="Script" uid="uid://d1ti5u6nlj2ln" path="res://scripts/materials/terrain.gd" id="2_gctke"]
 [ext_resource type="Texture2D" uid="uid://clk0hqrqf3aju" path="res://assets/textures/underwater.jpg" id="3_efv0x"]
@@ -9,46 +10,43 @@
 [ext_resource type="Texture2D" uid="uid://cl6bp2caxxu5a" path="res://assets/textures/rock.jpg" id="6_bjnku"]
 [ext_resource type="Texture2D" uid="uid://j37fbkctdjcn" path="res://assets/textures/snow.jpg" id="7_m7l8l"]
 
-[sub_resource type="Resource" id="Resource_qd0mg"]
+[sub_resource type="Resource" id="Resource_4aojw"]
 script = ExtResource("2_gctke")
 texture = ExtResource("3_efv0x")
 name = "underwater"
 metadata/_custom_type_script = "uid://d1ti5u6nlj2ln"
 
-[sub_resource type="Resource" id="Resource_svnyy"]
+[sub_resource type="Resource" id="Resource_3c25v"]
 script = ExtResource("2_gctke")
 texture = ExtResource("4_o4yy0")
-name = "Sand"
+name = "sand"
 metadata/_custom_type_script = "uid://d1ti5u6nlj2ln"
 
-[sub_resource type="Resource" id="Resource_ku2u6"]
+[sub_resource type="Resource" id="Resource_qdhl3"]
 script = ExtResource("2_gctke")
 texture = ExtResource("5_xswv0")
-name = "Grass"
+name = "grass"
 metadata/_custom_type_script = "uid://d1ti5u6nlj2ln"
 
-[sub_resource type="Resource" id="Resource_snm07"]
+[sub_resource type="Resource" id="Resource_mpc0v"]
 script = ExtResource("2_gctke")
 texture = ExtResource("6_bjnku")
-name = "Rock"
+name = "rock"
 metadata/_custom_type_script = "uid://d1ti5u6nlj2ln"
 
-[sub_resource type="Resource" id="Resource_h43y2"]
+[sub_resource type="Resource" id="Resource_1m0hd"]
 script = ExtResource("2_gctke")
 texture = ExtResource("7_m7l8l")
-name = "Snow"
+name = "snow"
 metadata/_custom_type_script = "uid://d1ti5u6nlj2ln"
 
-[sub_resource type="Resource" id="Resource_o4yy0"]
+[sub_resource type="Resource" id="Resource_3pcuw"]
 script = ExtResource("3_gctke")
-height = 10
 flow = 2.5
-name = "Water"
+name = "water"
 metadata/_custom_type_script = "uid://b88suvcufmgdt"
 
 [resource]
 script = ExtResource("1_475gv")
-water = SubResource("Resource_o4yy0")
-terrain = Array[ExtResource("2_gctke")]([SubResource("Resource_qd0mg"), SubResource("Resource_svnyy"), SubResource("Resource_ku2u6"), SubResource("Resource_snm07"), SubResource("Resource_h43y2")])
-max_height = 80.0
+materials = Array[ExtResource("1_4aojw")]([SubResource("Resource_4aojw"), SubResource("Resource_3c25v"), SubResource("Resource_qdhl3"), SubResource("Resource_mpc0v"), SubResource("Resource_1m0hd"), SubResource("Resource_3pcuw")])
 metadata/_custom_type_script = "uid://bu2rjvy3rv1bx"

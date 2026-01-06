@@ -1,7 +1,7 @@
 @tool
 class_name LandMaterial extends WorldMaterial
 
-@export_group("Texture Data")
+@export_group("Material")
 @export var texture: Texture2D
 
 @export_group("Terrain Properties")

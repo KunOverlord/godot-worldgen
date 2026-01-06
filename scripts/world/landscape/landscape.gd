@@ -1,18 +1,13 @@
 @tool
 class_name LandscapeWorld extends World
 
-#const TEST_WORLD = preload("res://assets/templates/land/tropical.tres")
-
-#var world: WorldSeed = WorldSeed.new(TEST_WORLD)
-var world : WorldSeed = LandTemplate.testworld()
-var water: WaterNode # to implement from the WorldSeed generation
-var nodes: Array[TerrainNode] = []
+var _water: WaterNode 
 
 @export_group("Terrain Settings")
 @export_range(8,64,1) var node_size: int = 16
-@export var chunk_count: Vector2i = Vector2i(1, 1) :
+@export var node_count: Vector2i = Vector2i(1, 1) :
 	set(value):
-		chunk_count = Vector2i(
+		node_count = Vector2i(
 			min(32, max(value.x, 1) ),
 			min( 32 , max(value.y, 1 ) )
 		)
@@ -22,43 +17,52 @@ var nodes: Array[TerrainNode] = []
 	set(val):
 		# We only trigger if the user sets it to TRUE
 		if val == true:
-			world.create_seed()
-			generate_world.call_deferred()
+			_seed.reset(_template)
+			create_landscape.call_deferred()
 			CLICK_TO_REGENERATE = false 
+
+#
+func _init():
+	print_debug("Attributes",_template.attributes())
+	super._init()
 
 func _ready() -> void:
 	print("--- LandscapeWorld script is LIVE in the Scene Tree ---")
-	
-func world_offset() -> Vector2 :
-	return Vector2(chunk_count.x * node_size / 2, chunk_count.y * node_size / 2 )
 
-func generate_world() -> void:
+#
+func template() -> LandTemplate:
+	if _template == null: _template = GameData.landscapeworld("tropical")
+	return super.template()
+
+func create_offset() -> Vector2 :
+	return Vector2(node_count.x * node_size / 2, node_count.y * node_size / 2 )
+
+func create_landscape() -> void:
 	print("--- Starting Regeneration ---")
-	#prepare the world origin offset
-	offset = world_offset()
-	var material : ShaderMaterial = world.template.testshader()
-	
+	#prepare the _template origin offset
+	offset = create_offset()
+	var seed : WorldSeed = worldseed()
+	var material : ShaderMaterial = template().testmaterial()
+	#var material : ShaderMaterial = template().create_material()
 	# 1. Clear existing chunks
 	for child in get_children():
 		if child is TerrainNode:
 			child.free()
-	
 	# 2. Check for Noise
-	if not world or not world.noise:
+	if not seed:
 		printerr("ABORT: WorldSeed or Noise is null")
 		return
-	
-	# 3. Force Noise Update
-	world._update_noise()
-	
 	# 4. Create chunks
-	for x in range(chunk_count.x):
-		for z in range(chunk_count.y):
+	for x in range(node_count.x):
+		for z in range(node_count.y):
 			create_node(Vector2i(x, z ) , material ) 
-	
+			
+	# 5.- Create Water surface if required
+	create_water()
 	print("--- Generation Finished ---")
 
 func create_node(coord: Vector2i , material : ShaderMaterial = null ) -> TerrainNode:
+	var noise = worldseed().noise()
 	var node = TerrainNode.new()
 	node.name = "node_%d_%d" % [coord.x, coord.y]
 	add_child(node)
@@ -67,8 +71,33 @@ func create_node(coord: Vector2i , material : ShaderMaterial = null ) -> Terrain
 	if Engine.is_editor_hint():
 		node.owner = get_tree().edited_scene_root
 		
-	node.setup(coord, offset, node_size, world.noise)
+	node.setup(coord, offset, node_size, noise )
 	if material: node.apply_shader(material)
 	return node
 
+#
+func create_water() -> void:
+	# 1. Clean up old water if it exists
+	if _water and is_instance_valid(_water):
+		_water.queue_free()
 	
+	# 2. Get data from the Seed
+	# We assume WorldSeed has already parsed the Template Arrays into single values
+	var seed = worldseed() 
+	var level = seed.get_attribute("water_level", 0.0)
+	var color = seed.get_attribute("water_color", Color.ROYAL_BLUE)
+	
+	# 3. Instance and Configure
+	_water = WaterNode.new()
+	_water.name = "WaterLevel"
+	add_child(_water)
+	
+	# Set owner for editor visibility
+	if Engine.is_editor_hint():
+		_water.owner = get_tree().edited_scene_root
+		
+	# 4. Calculate size based on grid
+	var total_size = node_count.x * node_size * 2 # Cover a wide area
+	_water.setup(level, color, total_size)
+	
+	print("Water created at height: ", level)

@@ -1,39 +1,19 @@
 @tool
 class_name WaterNode extends MeshInstance3D
 
-var overlay: ColorRect
-var canvas: CanvasLayer
-
-func _ready() -> void:
-	# Setup the UI Layer
-	canvas = CanvasLayer.new()
-	add_child(canvas)
+func setup(level: float, color: Color, size: float):
+	# 1. Mesh Setup
+	var p_mesh = PlaneMesh.new()
+	p_mesh.size = Vector2(size, size)
+	p_mesh.subdivide_depth = 64
+	p_mesh.subdivide_width = 64
+	mesh = p_mesh
 	
-	# Setup the Overlay
-	overlay = ColorRect.new()
-	overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	overlay.visible = false # Hidden by default
+	# 2. Position
+	global_position.y = level
 	
-	# Apply the Submerged Shader
+	# 3. Material Setup (Assuming a WaterMaterial logic exists)
 	var mat = ShaderMaterial.new()
-	mat.shader = load("res://assets/shaders/underwater.gdshader")
-	overlay.material = mat
-	
-	canvas.add_child(overlay)
-
-func _process(_delta: float) -> void:
-	var cam = get_viewport().get_camera_3d()
-	if not cam: return
-	
-	# Detection Logic
-	var is_underwater = cam.global_position.y < global_position.y
-	
-	# Toggle the visibility of the screen effect
-	if overlay.visible != is_underwater:
-		overlay.visible = is_underwater
-		_update_environmental_lighting(is_underwater)
-
-func _update_environmental_lighting(underwater: bool) -> void:
-	# Here you would adjust WorldEnvironment Fog/Ambient light
-	pass
+	mat.shader = GameData.shader("waternode") # Your water shader
+	mat.set_shader_parameter("water_color", color)
+	mesh.surface_set_material(0, mat)
