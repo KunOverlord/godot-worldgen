@@ -70,12 +70,8 @@ func fill(template: WorldTemplate = null) -> WorldSeed:
 	return self
 
 
-
-#
-func get_attribute(name : String , default : Variant = null) -> Variant:
-	return _data.get(name,default)
-#
-func set_attribute(name : String , value : Variant ) -> WorldSeed:
-	_data.set(name,value)
-	return self
+func attributes() -> Dictionary : return _data
+func has_attribute( name = "" ) -> bool : return name.length() and attributes().has(name)
+func get_attribute(name : String , default : Variant = null) -> Variant: return _data.get(name,default)
+func set_attribute(name : String , value : Variant ) : _data.set(name,value)
 	

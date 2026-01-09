@@ -4,8 +4,9 @@ class_name LandscapeWorld extends World
 var _water: WaterNode 
 
 @export_group("Terrain Settings")
-@export_range(8,64,2) var node_size: int = 8
+@export_range(8,256,2) var node_size: int = 8
 @export var node_count: Vector2i = Vector2i(0, 0)
+@export var show_water: bool = true
 
 @export_group("Controls")
 @export var CLICK_TO_REGENERATE: bool = false:
@@ -66,9 +67,11 @@ func create_landscape() -> void:
 		for z in range(size.y):
 			create_node(Vector2i(x, z ) , material ) 
 			
-	# 5.- Create Water surface if required
-	create_water()
-	print("--- Generation Finished ---")
+	# 5.- Create Water surface if required (clear water if already exists)
+	clear_water()
+	if show_water and seed.has_attribute("water_level") : create_water( )
+	#if template().has_water(): create_water( template().water_material() )
+	#print("--- Generation Finished ---")
 
 func create_node(coord: Vector2i , material : ShaderMaterial = null ) -> TerrainNode:
 	var noise = worldseed().noise()
@@ -84,29 +87,27 @@ func create_node(coord: Vector2i , material : ShaderMaterial = null ) -> Terrain
 	if material: node.apply_shader(material)
 	return node
 
-#
-func create_water() -> void:
-	# 1. Clean up old water if it exists
+# Clean up old water if it exists
+func clear_water() :
 	if _water and is_instance_valid(_water):
 		_water.queue_free()
-	
-	# 2. Get data from the Seed
-	# We assume WorldSeed has already parsed the Template Arrays into single values
+		_water = null
+
+func create_water( ) -> void:
+	# Cover a wide area
+	var _size = tiles().x * tile_size()
 	var seed = worldseed() 
-	var level = seed.get_attribute("water_level", 0.0)
-	var color = seed.get_attribute("water_color", Color.ROYAL_BLUE)
-	var tiles = tiles()
+	# Set owner for editor visibility
+	var container = get_tree().edited_scene_root if Engine.is_editor_hint() else self
+	#if Engine.is_editor_hint(): _water.owner = get_tree().edited_scene_root
+	# 1. Clean up old water if it exists
+	#clear_water()
+	# 2. Get data from the Seed
 	# 3. Instance and Configure
-	_water = WaterNode.new()
-	_water.name = "WaterLevel"
+	_water = WaterNode.new("water",container).setup( seed , _size )
 	add_child(_water)
 	
-	# Set owner for editor visibility
-	if Engine.is_editor_hint():
-		_water.owner = get_tree().edited_scene_root
-		
 	# 4. Calculate size based on grid
-	var total_size = tiles.x * tile_size() * 2 # Cover a wide area
-	_water.setup(level, color, total_size)
+	#_water.setup(level, color, _size)
 	
-	print("Water created at height: ", level)
+	print("Water created")

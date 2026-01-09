@@ -67,12 +67,20 @@ func land_materials() -> Array[WorldMaterial]:
 		if  list.size() < MAT_SIZE: break #skip after reaching the texture limit
 	return list
 
-#get a random water template
-func water_material() -> WaterMaterial:
+#List all water materials
+func water_materials() -> Array[WaterMaterial] :
 	var list : Array[WaterMaterial] = []
 	for water in world_materials():
 		if water is WaterMaterial: list.append(water)
-	return list[randi() % list.size()] if list.size() else null
+	return list
 	
-	
-	
+
+#get a random water template
+func water_material() -> WaterMaterial:
+	var materials = water_materials()
+	var count = materials.size()
+	return materials[randi() & count] if count else null
+#
+#check if has water
+func has_water() -> bool:
+	return water_materials().size() > 0
