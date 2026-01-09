@@ -1,8 +1,9 @@
-[gd_resource type="Resource" script_class="LandTemplate" load_steps=16 format=3 uid="uid://dc0fh537yxol7"]
+[gd_resource type="Resource" script_class="LandTemplate" load_steps=23 format=3 uid="uid://dc0fh537yxol7"]
 
 [ext_resource type="Script" uid="uid://nbsia7j22i70" path="res://scripts/materials/material.gd" id="1_4aojw"]
 [ext_resource type="Script" uid="uid://bu2rjvy3rv1bx" path="res://scripts/world/landscape/template.gd" id="1_475gv"]
-[ext_resource type="Script" uid="uid://d1ti5u6nlj2ln" path="res://scripts/materials/terrain.gd" id="2_gctke"]
+[ext_resource type="Script" uid="uid://dkt7a0un1f7pb" path="res://scripts/materials/rule.gd" id="2_3c25v"]
+[ext_resource type="Script" uid="uid://d1ti5u6nlj2ln" path="res://scripts/materials/land.gd" id="2_4aojw"]
 [ext_resource type="Texture2D" uid="uid://clk0hqrqf3aju" path="res://assets/textures/underwater.jpg" id="3_efv0x"]
 [ext_resource type="Script" uid="uid://b88suvcufmgdt" path="res://scripts/materials/water.gd" id="3_gctke"]
 [ext_resource type="Texture2D" uid="uid://c5ynvncg7b2v0" path="res://assets/textures/sand.jpg" id="4_o4yy0"]
@@ -10,43 +11,83 @@
 [ext_resource type="Texture2D" uid="uid://cl6bp2caxxu5a" path="res://assets/textures/rock.jpg" id="6_bjnku"]
 [ext_resource type="Texture2D" uid="uid://j37fbkctdjcn" path="res://assets/textures/snow.jpg" id="7_m7l8l"]
 
+[sub_resource type="Resource" id="Resource_i5y7c"]
+script = ExtResource("2_3c25v")
+metadata/_custom_type_script = "uid://dkt7a0un1f7pb"
+
 [sub_resource type="Resource" id="Resource_4aojw"]
-script = ExtResource("2_gctke")
+script = ExtResource("2_4aojw")
 texture = ExtResource("3_efv0x")
+rules = Array[ExtResource("2_3c25v")]([SubResource("Resource_i5y7c")])
 name = "underwater"
 metadata/_custom_type_script = "uid://d1ti5u6nlj2ln"
 
+[sub_resource type="Resource" id="Resource_pdv0y"]
+script = ExtResource("2_3c25v")
+height = Vector2(0, 2)
+metadata/_custom_type_script = "uid://dkt7a0un1f7pb"
+
 [sub_resource type="Resource" id="Resource_3c25v"]
-script = ExtResource("2_gctke")
+script = ExtResource("2_4aojw")
 texture = ExtResource("4_o4yy0")
+rules = Array[ExtResource("2_3c25v")]([SubResource("Resource_pdv0y")])
 name = "sand"
 metadata/_custom_type_script = "uid://d1ti5u6nlj2ln"
 
+[sub_resource type="Resource" id="Resource_rgscy"]
+script = ExtResource("2_3c25v")
+height = Vector2(2, 10)
+metadata/_custom_type_script = "uid://dkt7a0un1f7pb"
+
 [sub_resource type="Resource" id="Resource_qdhl3"]
-script = ExtResource("2_gctke")
+script = ExtResource("2_4aojw")
 texture = ExtResource("5_xswv0")
+rules = Array[ExtResource("2_3c25v")]([SubResource("Resource_rgscy")])
 name = "grass"
 metadata/_custom_type_script = "uid://d1ti5u6nlj2ln"
 
+[sub_resource type="Resource" id="Resource_jnp5i"]
+script = ExtResource("2_3c25v")
+height = Vector2(0, 30)
+slope = 0.8
+metadata/_custom_type_script = "uid://dkt7a0un1f7pb"
+
 [sub_resource type="Resource" id="Resource_mpc0v"]
-script = ExtResource("2_gctke")
+script = ExtResource("2_4aojw")
 texture = ExtResource("6_bjnku")
+rules = Array[ExtResource("2_3c25v")]([SubResource("Resource_jnp5i")])
 name = "rock"
 metadata/_custom_type_script = "uid://d1ti5u6nlj2ln"
 
+[sub_resource type="Resource" id="Resource_w4qlg"]
+script = ExtResource("2_3c25v")
+height = Vector2(10, 40)
+metadata/_custom_type_script = "uid://dkt7a0un1f7pb"
+
 [sub_resource type="Resource" id="Resource_1m0hd"]
-script = ExtResource("2_gctke")
+script = ExtResource("2_4aojw")
 texture = ExtResource("7_m7l8l")
+rules = Array[ExtResource("2_3c25v")]([SubResource("Resource_w4qlg")])
 name = "snow"
 metadata/_custom_type_script = "uid://d1ti5u6nlj2ln"
 
 [sub_resource type="Resource" id="Resource_3pcuw"]
 script = ExtResource("3_gctke")
-flow = 2.5
-name = "water"
+color = Array[Color]([Color(0.3113609, 0.29600182, 0.78294617, 1), Color(0.26467338, 0.2881431, 0.4335939, 1)])
+flow = Array[float]([2.4])
+name = "deepwater"
+metadata/_custom_type_script = "uid://b88suvcufmgdt"
+
+[sub_resource type="Resource" id="Resource_p74v4"]
+script = ExtResource("3_gctke")
+color = Array[Color]([Color(0.25490198, 0.4117647, 0.88235295, 1), Color(0.41960785, 0.6784314, 1, 1)])
+level = Array[float]([0.0, 2.0])
+flow = Array[float]([0.0, 1.2, 2.5])
+name = "tropicalwater"
 metadata/_custom_type_script = "uid://b88suvcufmgdt"
 
 [resource]
 script = ExtResource("1_475gv")
-materials = Array[ExtResource("1_4aojw")]([SubResource("Resource_4aojw"), SubResource("Resource_3c25v"), SubResource("Resource_qdhl3"), SubResource("Resource_mpc0v"), SubResource("Resource_1m0hd"), SubResource("Resource_3pcuw")])
+min = Vector2(-10, -8)
+materials = Array[ExtResource("1_4aojw")]([SubResource("Resource_4aojw"), SubResource("Resource_3c25v"), SubResource("Resource_qdhl3"), SubResource("Resource_mpc0v"), SubResource("Resource_1m0hd"), SubResource("Resource_3pcuw"), SubResource("Resource_p74v4")])
 metadata/_custom_type_script = "uid://bu2rjvy3rv1bx"

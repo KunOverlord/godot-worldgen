@@ -1,25 +1,28 @@
-[gd_scene load_steps=12 format=3 uid="uid://dv7gb21xf10sl"]
+[gd_scene load_steps=9 format=3 uid="uid://dv7gb21xf10sl"]
 
 [ext_resource type="Script" uid="uid://bglu5houivkje" path="res://scripts/world/landscape/landscape.gd" id="1_4a3cr"]
 [ext_resource type="Script" uid="uid://c271arb7cn4al" path="res://scripts/world/data.gd" id="1_5iw4v"]
-[ext_resource type="Script" uid="uid://pp6sjaavn6yg" path="res://scripts/world/landscape/textures.gd" id="2_pwuu7"]
-[ext_resource type="Texture2D" uid="uid://cj7rmxjnow2al" path="res://assets/textures/grass.jpg" id="2_wyoyg"]
-[ext_resource type="Texture2D" uid="uid://cl6bp2caxxu5a" path="res://assets/textures/rock.jpg" id="3_5iw4v"]
 [ext_resource type="Script" uid="uid://c0ncabdknbcy5" path="res://scripts/world/landscape/node.gd" id="3_pwuu7"]
-[ext_resource type="Texture2D" uid="uid://c5ynvncg7b2v0" path="res://assets/textures/sand.jpg" id="4_gneeh"]
-[ext_resource type="Texture2D" uid="uid://j37fbkctdjcn" path="res://assets/textures/snow.jpg" id="6_j52r0"]
-[ext_resource type="Texture2D" uid="uid://clk0hqrqf3aju" path="res://assets/textures/underwater.jpg" id="7_g2y8h"]
+[ext_resource type="Shader" uid="uid://cp4axj07ug4pq" path="res://assets/shaders/waternode.gdshader" id="4_qe2mc"]
+[ext_resource type="Script" uid="uid://birpieynqxbvc" path="res://scripts/world/landscape/water.gd" id="5_f0c8v"]
 
 [sub_resource type="Environment" id="Environment_4a3cr"]
 
-[sub_resource type="Resource" id="Resource_un1l0"]
-script = ExtResource("2_pwuu7")
-water_level = -1.5
-underwater_tex = ExtResource("7_g2y8h")
-sand_tex = ExtResource("4_gneeh")
-grass_tex = ExtResource("2_wyoyg")
-rock_tex = ExtResource("3_5iw4v")
-snow_tex = ExtResource("6_j52r0")
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qe2mc"]
+render_priority = 0
+shader = ExtResource("4_qe2mc")
+shader_parameter/water_color = Color(0.41960785, 0.6784314, 1, 1)
+shader_parameter/deep_water_color = Color(0, 0.1, 0.2, 1)
+shader_parameter/beer_law_factor = 2.0
+shader_parameter/edge_fade_distance = 0.5
+shader_parameter/wave_speed = 1.0
+shader_parameter/wave_height = 0.3
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_f0c8v"]
+material = SubResource("ShaderMaterial_qe2mc")
+size = Vector2(64, 64)
+subdivide_width = 64
+subdivide_depth = 64
 
 [node name="World" type="Node3D"]
 script = ExtResource("1_5iw4v")
@@ -33,21 +36,25 @@ environment = SubResource("Environment_4a3cr")
 
 [node name="Landscape" type="Node3D" parent="."]
 script = ExtResource("1_4a3cr")
-node_size = 24
-textures = SubResource("Resource_un1l0")
-offset = Vector2(24, 24)
+node_size = 0
+node_count = Vector2i(2, 2)
+offset = Vector2(16, 16)
 
 [node name="node_0_0" type="StaticBody3D" parent="Landscape"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24, 0, -24)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, -16)
 script = ExtResource("3_pwuu7")
 
 [node name="node_0_1" type="StaticBody3D" parent="Landscape"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, 0)
 script = ExtResource("3_pwuu7")
 
 [node name="node_1_0" type="StaticBody3D" parent="Landscape"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -24)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -16)
 script = ExtResource("3_pwuu7")
 
 [node name="node_1_1" type="StaticBody3D" parent="Landscape"]
 script = ExtResource("3_pwuu7")
+
+[node name="@MeshInstance3D@52544" type="MeshInstance3D" parent="Landscape"]
+mesh = SubResource("PlaneMesh_f0c8v")
+script = ExtResource("5_f0c8v")

@@ -7,8 +7,6 @@ const TYPE_SOLAR = "solar"
 const TYPE_VOXEL = "voxel"
 const TYPE_DUNGEON = "dungeon"
 
-
-@export_group("Materials")
 @export var materials: Array[WorldMaterial] = []
 	
 @export_group("Atmosphere & Lighting")

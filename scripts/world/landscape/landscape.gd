@@ -4,13 +4,8 @@ class_name LandscapeWorld extends World
 var _water: WaterNode 
 
 @export_group("Terrain Settings")
-@export_range(8,64,1) var node_size: int = 16
-@export var node_count: Vector2i = Vector2i(1, 1) :
-	set(value):
-		node_count = Vector2i(
-			min(32, max(value.x, 1) ),
-			min( 32 , max(value.y, 1 ) )
-		)
+@export_range(8,64,2) var node_size: int = 8
+@export var node_count: Vector2i = Vector2i(0, 0)
 
 @export_group("Controls")
 @export var CLICK_TO_REGENERATE: bool = false:
@@ -23,7 +18,8 @@ var _water: WaterNode
 
 #
 func _init():
-	print_debug("Attributes",_template.attributes())
+	if _template :
+		print_debug("Attributes",_template.attributes())
 	super._init()
 
 func _ready() -> void:
@@ -34,15 +30,28 @@ func template() -> LandTemplate:
 	if _template == null: _template = GameData.landscapeworld("tropical")
 	return super.template()
 
-func create_offset() -> Vector2 :
-	return Vector2(node_count.x * node_size / 2, node_count.y * node_size / 2 )
+func tiles() -> Vector2 :
+	if( node_count.x and node_count.y): return node_count
+	return template().tiles
 
+func tile_size() -> float:
+	return node_size if node_size > 0 else template().tile_size
+
+func create_offset() -> Vector2 :
+	var nodes = tiles()
+	var size = tile_size()
+	return Vector2(nodes.x * size / 2, nodes.y * size / 2 )
+
+
+	
 func create_landscape() -> void:
 	print("--- Starting Regeneration ---")
 	#prepare the _template origin offset
 	offset = create_offset()
 	var seed : WorldSeed = worldseed()
 	var material : ShaderMaterial = template().testmaterial()
+	var size = tiles()
+	var tile_size = tile_size()
 	#var material : ShaderMaterial = template().create_material()
 	# 1. Clear existing chunks
 	for child in get_children():
@@ -53,8 +62,8 @@ func create_landscape() -> void:
 		printerr("ABORT: WorldSeed or Noise is null")
 		return
 	# 4. Create chunks
-	for x in range(node_count.x):
-		for z in range(node_count.y):
+	for x in range(size.x):
+		for z in range(size.y):
 			create_node(Vector2i(x, z ) , material ) 
 			
 	# 5.- Create Water surface if required
@@ -71,7 +80,7 @@ func create_node(coord: Vector2i , material : ShaderMaterial = null ) -> Terrain
 	if Engine.is_editor_hint():
 		node.owner = get_tree().edited_scene_root
 		
-	node.setup(coord, offset, node_size, noise )
+	node.setup(coord, offset, tile_size(), noise )
 	if material: node.apply_shader(material)
 	return node
 
@@ -86,7 +95,7 @@ func create_water() -> void:
 	var seed = worldseed() 
 	var level = seed.get_attribute("water_level", 0.0)
 	var color = seed.get_attribute("water_color", Color.ROYAL_BLUE)
-	
+	var tiles = tiles()
 	# 3. Instance and Configure
 	_water = WaterNode.new()
 	_water.name = "WaterLevel"
@@ -97,7 +106,7 @@ func create_water() -> void:
 		_water.owner = get_tree().edited_scene_root
 		
 	# 4. Calculate size based on grid
-	var total_size = node_count.x * node_size * 2 # Cover a wide area
+	var total_size = tiles.x * tile_size() * 2 # Cover a wide area
 	_water.setup(level, color, total_size)
 	
 	print("Water created at height: ", level)

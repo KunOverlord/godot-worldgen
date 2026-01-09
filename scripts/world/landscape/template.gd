@@ -4,20 +4,34 @@ class_name LandTemplate extends WorldTemplate
 const MAT_SIZE : int = 7
 
 @export_group("Landscape")
-@export var min_height: Array[float] = [-10.0]
-@export var max_height: Array[float] = [30.0]
+@export var min: Vector2 = Vector2(-10.0,0.0)
+@export var max: Vector2 = Vector2(30.0,40.0)
+@export_range(8,64,1) var tile_size: int = 16
+@export var tiles: Vector2i = Vector2i(4, 4) :
+	set(value):
+		tiles = Vector2i(
+			min(32, max(value.x, 1) ),
+			min( 32 , max(value.y, 1 ) )
+		)
 
-@export_group("Water")
-@export var water_color: Array[Color] = [Color.ROYAL_BLUE]
-@export var water_level : Array[float] = [0.0]
+#return random world size
+func height() -> Vector2:
+	var _min = randf_range(min.x,min.y)
+	var _max = randf_range(max.x,max.y)
+	return Vector2(_min,_max)
 
 #override/append elements
 func attributes() -> Dictionary:
 	var contents = super.attributes()
-	if water_color: contents["water_color"] = water_color
-	if water_level: contents["water_level"] = water_level
-	if min_height: contents["min_height"] = min_height
-	if max_height: contents["max_height"] = max_height
+	contents["min_height"] = [min.x,min.y]
+	contents["max_height"] = [max.x,max.y]
+	
+	var water = water_material()
+	if water :
+		contents["water_color"] = water.color
+		contents["water_level"] = water.level
+		contents["water_flow"] = water.flow
+	print(contents)
 	return contents
 
 #test shader
@@ -52,3 +66,13 @@ func land_materials() -> Array[WorldMaterial]:
 		if mat is LandMaterial: list.append(mat)
 		if  list.size() < MAT_SIZE: break #skip after reaching the texture limit
 	return list
+
+#get a random water template
+func water_material() -> WaterMaterial:
+	var list : Array[WaterMaterial] = []
+	for water in world_materials():
+		if water is WaterMaterial: list.append(water)
+	return list[randi() % list.size()] if list.size() else null
+	
+	
+	

@@ -4,7 +4,6 @@ class_name WorldMaterial extends Resource
 #private attribute
 var _name : String = ""
 
-@export_group("Material")
 #attribute accessor
 @export var name: String:
 	get: return _name if _name.length() else type()
