@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=3 uid="uid://c20kxldawscei"]
+
+[ext_resource type="Script" uid="uid://mevegig1dmud" path="res://scripts/test/player_test.gd" id="1_qir2g"]
+[ext_resource type="PackedScene" uid="uid://dgv5e0h7l84cv" path="res://assets/models/ula/ulala.fbx" id="2_lkt5g"]
+[ext_resource type="Script" uid="uid://bt6bm546ntema" path="res://scripts/test/camera_test.gd" id="3_lkt5g"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_2ue4q"]
+radius = 0.25
+height = 1.8
+
+[node name="Player" type="CharacterBody3D"]
+script = ExtResource("1_qir2g")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_2ue4q")
+debug_color = Color(1, 1, 1, 0.41960785)
+
+[node name="Display" type="Node3D" parent="."]
+
+[node name="ulala" parent="Display" instance=ExtResource("2_lkt5g")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0.2, 0)
+
+[node name="CameraPOV" type="Marker3D" parent="."]
+transform = Transform3D(0.99997133, 0, 0.0075746565, 0, 1, 0, -0.0075746565, 0, 0.99997133, 0.2, 0.7, 0.1)
+script = ExtResource("3_lkt5g")
+
+[node name="SpringArm3D" type="SpringArm3D" parent="CameraPOV"]
+
+[node name="Camera3D" type="Camera3D" parent="CameraPOV/SpringArm3D"]
+transform = Transform3D(0.9999254, -0.009598976, 0.007557404, 0.004534478, 0.8660135, 0.5, -0.011344302, -0.4999284, 0.8659924, 2.9802322e-08, 0.50000006, 0.99999976)

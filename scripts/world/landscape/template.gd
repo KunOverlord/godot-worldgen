@@ -79,7 +79,8 @@ func water_materials() -> Array[WaterMaterial] :
 func water_material() -> WaterMaterial:
 	var materials = water_materials()
 	var count = materials.size()
-	return materials[randi() & count] if count else null
+	print(count,randi() % count)
+	return materials[randi() % count] if count else null
 #
 #check if has water
 func has_water() -> bool:

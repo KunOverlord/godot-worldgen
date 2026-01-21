@@ -6,9 +6,68 @@
 [node name="Landscape" type="Node3D"]
 script = ExtResource("1_4a3cr")
 node_size = 32
-node_count = Vector2i(1, 1)
-offset = Vector2(16, 16)
+node_count = Vector2i(4, 4)
+offset = Vector2(64, 64)
 
 [node name="node_0_0" type="StaticBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, -16)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -64, 0, -64)
+script = ExtResource("2_pwuu7")
+
+[node name="node_0_1" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -64, 0, -32)
+script = ExtResource("2_pwuu7")
+
+[node name="node_0_2" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -64, 0, 0)
+script = ExtResource("2_pwuu7")
+
+[node name="node_0_3" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -64, 0, 32)
+script = ExtResource("2_pwuu7")
+
+[node name="node_1_0" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32, 0, -64)
+script = ExtResource("2_pwuu7")
+
+[node name="node_1_1" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32, 0, -32)
+script = ExtResource("2_pwuu7")
+
+[node name="node_1_2" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32, 0, 0)
+script = ExtResource("2_pwuu7")
+
+[node name="node_1_3" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32, 0, 32)
+script = ExtResource("2_pwuu7")
+
+[node name="node_2_0" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -64)
+script = ExtResource("2_pwuu7")
+
+[node name="node_2_1" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -32)
+script = ExtResource("2_pwuu7")
+
+[node name="node_2_2" type="StaticBody3D" parent="."]
+script = ExtResource("2_pwuu7")
+
+[node name="node_2_3" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 32)
+script = ExtResource("2_pwuu7")
+
+[node name="node_3_0" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 0, -64)
+script = ExtResource("2_pwuu7")
+
+[node name="node_3_1" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 0, -32)
+script = ExtResource("2_pwuu7")
+
+[node name="node_3_2" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 0, 0)
+script = ExtResource("2_pwuu7")
+
+[node name="node_3_3" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 0, 32)
 script = ExtResource("2_pwuu7")
