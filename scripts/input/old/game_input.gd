@@ -1,4 +1,4 @@
-class_name GameInput
+class_name GameInputOLD
 extends BaseInput
 
 # -- Button state constants

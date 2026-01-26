@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dsebg2cr7gnn4"]
 
-[ext_resource type="Script" uid="uid://bgqvbpvpdl70s" path="res://scripts/input/game_input_debug.gd" id="1_mvvly"]
+[ext_resource type="Script" uid="uid://bgqvbpvpdl70s" path="res://scripts/input/old/game_input_debug.gd" id="1_mvvly"]
 
 [node name="Node3D" type="Node3D"]
 
