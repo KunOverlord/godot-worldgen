@@ -1,8 +1,8 @@
 [gd_scene load_steps=5 format=3 uid="uid://c20kxldawscei"]
 
-[ext_resource type="Script" uid="uid://mevegig1dmud" path="res://scripts/test/player_test.gd" id="1_qir2g"]
+[ext_resource type="Script" uid="uid://mevegig1dmud" path="res://scripts/player/player_test.gd" id="1_qir2g"]
 [ext_resource type="PackedScene" uid="uid://dgv5e0h7l84cv" path="res://assets/models/ula/ulala.fbx" id="2_lkt5g"]
-[ext_resource type="Script" uid="uid://bt6bm546ntema" path="res://scripts/test/camera_test.gd" id="3_lkt5g"]
+[ext_resource type="Script" uid="uid://bt6bm546ntema" path="res://scripts/camera/camera_test.gd" id="3_lkt5g"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_2ue4q"]
 radius = 0.25
